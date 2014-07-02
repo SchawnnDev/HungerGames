@@ -1,4 +1,4 @@
-BukkitGames
+BukkitGames (v1.x)
 ===========
 
 The old version of the BukkitGames plugin. It is no longer being updated or maintained. 
