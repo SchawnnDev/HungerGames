@@ -1,0 +1,17 @@
+# If you set REGEN_WORLD in the config.yml to false, you can config your worlds here.
+
+# Here you can set if sometimes should spawn generated maps.
+# The World Border Radius is taken from config.yml
+
+GEN_MAPS: false
+
+# All world folders have to be located in "/plugins/The BukkitGames/".
+# Add the name of each folder here. A random world of these will be selected upon start.
+# Example your folder is named test and you want to have a radius for this world of 500:
+# - 'NAME,RADIUS'
+# - 'test,500'
+
+WORLDS:
+  - 'world,300'
+  - 'world1,250'
+  - 'world2,400'

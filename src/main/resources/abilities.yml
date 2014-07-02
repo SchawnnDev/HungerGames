@@ -1,0 +1,81 @@
+# ConfigFile for the abilities of The BukkitGames.
+
+AB:
+  '1':
+    Desc: Arrows fired at the ground at explode.
+  '2':
+    Desc: When breaking a log, all other logs above will break, too.
+  '3':
+    Desc: Throwing snowballs causes confusion to players.
+  '4':
+    Desc: Fire charges get launched via left click.
+  '5':
+    Desc: When eating a cookie, you get strength.
+    Duration: 10
+  '6':
+    Desc: Gain strength when in fire and no fire damage.
+  '7':
+    Desc: Pigs always drop 2 porkchop.
+    Amount: 2
+  '8':
+    Desc: Take max of 2 fall damage. Damage you would have taken is transfered to those within a 5 block radius of you.
+  '9':
+    Desc: Headshot (instant kill) a player, if you shoot him from afar.
+    Distance: 30
+  '10':
+    Desc: Crops are grown immediately.
+  '11':
+    Desc: Right click with the stone ax and lightning strikes on the clicked block.
+    Cooldown: 15
+    Expired: Cooldown has not expired!
+  '12':
+    Desc: When you inflict damage to another player you will be healed.
+  '13':
+    Desc: With a Blaze Rod you can make items from other players break.
+    Chance: 5
+    Cooldown: 45
+    Expired: Cooldown has not expired!
+    Success: Item is broken!
+  '14':
+    Desc: If you kill a player your food level will be healed.
+  '15':
+    Desc: With a stick you can steal other players items.
+    Chance: 5
+    Cooldown: 30
+    Expired: Cooldown has not expired!
+    Success: Item was stolen.
+  '16':
+    Desc: If you eat an apple you are invisible for some seconds.
+    Cooldown: 60
+    Expired: Cooldown has not expired!
+    Duration: 6
+    invisible: You are now invisible!
+    visible: You are no longer invisible!
+  '17':
+    Desc: Disabled Ability!
+  '18':
+    Desc: With the fist you make damage like a stonesword, incoming damage is lower.
+  '19':
+    Desc: With every hit there is a chance to poison the other player.
+    Chance: 12
+    Duration: 20
+    Damager: Player was poisoned!
+    Defender: You have been poisoned!
+  '20':
+    Desc: Mobs don't attack you until you attack them first.
+  '21':
+    Desc: You can see in the night, when eating a potato!
+    Duration: 10
+  '22':
+    Desc: You can freeze other players with a watch!
+    radius: 30
+    Duration: 10
+    Cooldown: 180
+    Expired: Cooldown has not expired!
+    success: Have all the players have been frozen in a radius of 30 blocks!
+    target: 'The time has been frozen by <player> for 10 seconds!'
+    move: You are still frozen!
+    unfrozen: You are no longer frozen!
+  '23':
+    Desc: You explode on your death!
+    Burn: false

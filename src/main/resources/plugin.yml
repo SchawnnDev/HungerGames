@@ -1,0 +1,41 @@
+name: The BukkitGames
+main: main.BGMain
+version: 1.9.2.1-SNAPSHOT
+website: http://dev.bukkit.org/server-mods/bukkitgames
+dev-url: http://dev.bukkit.org/server-mods/bukkitgames
+authors: [ftbastler, Galodystic]
+startup: startup
+
+description: >
+             The BukkitGames.
+commands:
+  help:
+    description: Help.
+    usage: /<command>
+  kit:
+    description: Kits.
+    usage: /<command>
+  kitinfo:
+    description: Kits info.
+    usage: /<command> [kitName]
+  start:
+    description: Start.
+    usage: /<command>
+  spawn:
+    description: Spawn.
+    usage: /<command>
+  coin:
+    description: Coin.
+    usage: /<command>
+  bgversion:
+    description: Displays the current version and checks for updates.
+    usage: /<command>
+  bgdownload:
+    description: Download the new update if available.
+    usage: /<command>
+  team:
+    description: Team.
+    usage: /<command>
+  teleport:
+    description: Teleport.
+    usage: /<command>

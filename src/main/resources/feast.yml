@@ -1,0 +1,27 @@
+# Here you can config what should be spawned in the chests of the feasts.
+# You can also set the time, when the feast should spawn.
+#
+
+# When the feast should spawn, 3 minutes before it will announce the coords and will set the ground to soulsand
+SPAWN_TIME: 35
+
+# Whether to spawn the items in chests or not
+CHESTS: false
+
+# Do you want that players can not destroy blocks from feast?
+PROTECTED: true
+
+# Layout for a item line:
+# - 'ITEM_ID:DURABILITY,MIN_AMOUNT,MAX_AMOUNT,FORCE_SPAWN,ENCHANTMENT_ID,ENCHANTMENT_LEVEL'
+#
+# Example for one a line:
+# Bread, which will be spawned:
+# - '297,5,10,true'
+# Sword (with knockback enchantment), which will maybe be spawned:
+# - '268,1,1,false,19,1'
+
+ITEMS:
+  - '268,1,1,false,19,1'
+  - '298,1,1,false'
+  - '297,2,5,true'
+  - '373:8201,1,2,true'

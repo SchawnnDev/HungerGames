@@ -1,0 +1,115 @@
+TIME:
+# Max game length in minutes
+  MAX_GAME-MIN: 60
+    
+# When the worldborders should start to shrink in minutes
+  GAME_ENDING-MIN: 50
+    
+# Countdown to the start of the game
+  COUNTDOWN-SEC: 300
+  
+# Duration of invincibility.
+  FINAL_COUNTDOWN-SEC: 60
+
+# Language (available: en)
+LANGUAGE: en
+  
+# Define the messages. (You can use color codes in the MOTD, like '&e')
+MESSAGE:
+  WORLD_BORDER: You have reached the WorldBorder!
+  SERVER_FULL: The server is full.
+  GAME_PROGRESS: Game is in progress.
+  MOTD_PROGRESS: '&cGame is in progress.'
+  MOTD_COUNTDOWN: '&eGame begins in <time>.'
+  NO_KIT_PERMISSION: You are not allowed to use this kit.
+  HELP_MESSAGE: For help, visit tinyurl.com/HGHelp
+  SERVER_TITLE: BukkitGames HG Server
+  KIT_BUY_WEBSITE: Ask operator.
+
+# Toggle the advanced chat-system. (HUD chat-system)
+ADVANCED_CHAT: true
+
+# Show tips throughout the game?
+SHOW_TIPS: true 
+  
+# Add a line for each tip you want to display.
+TIPS:
+  - 'Some kits have special abilities.'
+  - 'This server runs the BukkitGames plugin.'
+  - 'GameMakers are invisible!'
+  - 'Get help by typing in /help.'
+  - 'Get information about a kit with /kitinfo [KitName].'
+  
+# Wheather Ops should be able to see invisible players or not
+PLAYERS_VISIBLE: false
+  
+# Should the kitname displayed as prefix in the chat?
+KIT_PREFIX: true
+
+# Spawn cornucopia on start (see cornucopia.yml)
+CORNUCOPIA: true
+
+# Spawn feast (see feast.yml)
+FEAST: true
+
+# Radius of the world
+WORLD_BORDER_RADIUS: 300
+
+# Minimum of players to start with.
+MINIMUM_PLAYERS_START: 5
+
+# Users which did not choose a kit, get the default kit (can be configured in the kit.yml)
+DEFAULT_KIT: false
+
+# If the plugin should use the item menu or the normal chat menu to display available kits
+ITEM_MENU: true
+
+# Enable or disable compass feature.
+COMPASS: true
+
+# Auto Update Compass (If true, may causes lag on the server!) COMPASS has to be enabled for this to work.
+AUTO_COMPASS: false
+
+# Team Function! If enabled players can add other players to their team!
+TEAM: true
+
+# Death signs mark Player death places! (Lines can be configured in deathsign.yml).
+DEATH_SIGNS: true
+
+# Regenerate world? (true: every round there will be a new world/ false: see world.yml for configs).
+REGEN_WORLD: true
+
+# If false, all players start the game at the spawn.
+# If true, each player starts at a random spot. (May causes lag on some servers!)
+RANDOM_START: false
+
+# Last Winner gets alle Kits in the next round only on local server! (no Mysql is needed!)
+SIMPLE_REWARD: false
+
+# Winner-Reward-System (Mysql Database needed!, Configuration in kit.yml)
+REWARD: false
+
+# How many Coins you get for one kill? (Only effects when REWARD is enabled!)
+COINS_FOR_KILL: 1
+
+# How many Coins you get when you win a game? (Only effects when REWARD is enabled!)
+COINS_FOR_WIN: 5
+
+# If enabled, players can join server during the game and act like spectators (permissions node "bg.spectator" required)
+SPECTATOR_SYSTEM: false
+
+# Weather to use a MySQL database for statistics. (leaderboard.yml will still be used!)
+MYSQL: false
+
+# Fill in the information for the database if you set "MYSQL" to true.
+HOST: ''
+PORT: ''
+USERNAME: ''
+PASSWORD: ''
+DATABASE: ''
+
+# We recommend you to leave this at it is, it makes updating the plugin a lot easier...
+AUTO_UPDATE: true
+
+# We also recommend you to leave this at it is, or you will have to check every day if there is an update for BukkitGames
+UPDATE_CHECK: true

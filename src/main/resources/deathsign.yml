@@ -1,0 +1,10 @@
+# If you enable this Death signs are protected, only people with bg.admin.editblocks
+# permissions could destroy them.
+PROTECTED: true
+
+# Max. 15 chars per line! Use placeholder [name] where the player name should be put in!
+
+FIRST_LINE: RIP
+SECOND_LINE: [name]
+THIRD_LINE: 
+FOURTH_LINE: 

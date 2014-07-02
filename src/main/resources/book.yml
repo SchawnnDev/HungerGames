@@ -1,0 +1,34 @@
+# Here you can config the book text, which the player gets when he joins the server
+#
+# Use the placeholder <server_title> where the Server name should be inserted.
+# Use the placeholder <space> where you want to leave a line blank.
+# Use the placeholder <newpage> where you want to end the page and go on with the next one.
+# Every line you create at content represents a line in the book.
+#
+# Max. 16 chars per line! (ColorCodes don't matter!)
+# &k is used in the End Poem, when the supernatural beings say words not meant for your eyes. Using it ingame will make all characters except spaces flash randomly as many different characters. It is currently the only animated format code.
+# &l creates bold text. This may not work properly on foreign or special characters.
+# &m creates striked text.
+# &n creates underlined text.
+# &o creates italic text. This one doesn't feel too Minecraft-like, as the text's pixels no longer have straight edges.
+# &[0-f, hexadecimal] creates colored text. See Color codes.
+# &r resets any of the previous styles so text after it appears normally.
+#
+# !!! If you use color codes you have to surround your message with '' !!!
+
+title: Welcome to the HungerGames!
+content:
+  - '&9Welcome to the'
+  - '&9HungerGames,'
+  - '&9hosted on the'
+  - '&1<server_title>'
+  - <space>
+  - <space>
+  - <space>
+  - Thanks for joining!
+  - Have fun playing!
+  - <newpage>
+  - '&9Get a kit now:'
+  - '&1/kit [kitName]'
+  - '&1/kitinfo [kitName]'
+author: The BukkitGames

@@ -1,0 +1,51 @@
+# !!! Do NOT change anything here! Changes will be overridden! !!!
+
+NO_PERMISSION: You don't have permission to do that!
+GAME_BEGUN: The game has already begun!
+CMD_ONLY_PLAYER_ACCESS: This command can only be accessed by players.
+TELEPORTED_SPAWN: You have been teleported to spawn.
+PLAYER_NOT_ONLINE: Player is currently not online.
+TEAM_FUNC_ADDED_PLAYER: Added player to your team.
+TEAM_FUNC_PLAYER_ALREADY_TEAM: That player is already in your Team!
+TEAM_FUNC_CMDS: /team add <player>, /team remove <player>, /team list
+TEAM_FUNC_REMOVED_PLAYER: Removed player from your Team.
+TEAM_FUNC_YOUR_TEAM: 'Your team: '
+TELEPORT_FUNC_CMDS: /teleport <player>, /teleport <x> <z>
+TEAM_FUNC_DISABLED: Team function is disabled.
+TELEPORT_FUNC_COORDS_NOT_VALID: Coordinates are not valid.
+TELEPORT_FUNC_TELEPORTED_COORDS: 'Teleported to x: <x> Z: <z>'
+TELEPORT_FUNC_TELEPORTED_PLAYER: Teleported to <player>.
+UPDATE_CHECK_DISABLED: Update checking is disabled.
+UPDATE_DOWNLOAD_DISABLED: Auto updating is disabled.
+UPDATE_DOWNLOAD_VERSION: Downloading new version (<version>).
+UPDATE_DOWNLOAD_COMPLETE: Plugin download complete.
+UPDATE_DOWNLOAD_ERROR: An error occured while trying to download the update.
+UPDATE_NO_UPDATE: No update available.
+REWARD_FUNC_DISABLED: Reward system is disabled.
+REWARD_FUNC_CMDS: /coin buy <kit>, /coin send <player> <amount>, /coin give <player> <amount>
+REWARD_FUNC_NOT_ALLOWED: You are not allowed to buy this kit.
+REWARD_FUNC_ALL_KITS: You can already access all kits.
+REWARD_FUNC_ALREADY_BOUGHT: You already own this kit.
+KIT_NOT_EXIST: This kit doesn't exist.
+REWARD_FUNC_KIT_NO_BUY: You can't buy this kit.
+REWARD_FUNC_BOUGHT_KIT: You have bought <kit>!
+REWARD_FUNC_NOT_ENOUGH_COINS: You don't have enough coins to buy that kit.
+REWARD_FUNC_INVALID_INT: Invalid integer!
+REWARD_FUNC_SUCCESS_COIN_SENT: Successfully sent coins to the player.
+REWARD_FUNC_SUCCESS_COIN_RECEIVED: You have received some coins!
+REWARD_FUNC_SUCCESS_TRANSACTION: Transaction successful.
+REWARD_FUNC_STATS: Player <player> has <coins> coins.
+COMPASS_TRACK: 'Tracking player <player>. Distance: <distance>'
+COMPASS_NOT_TRACK: No target found. Compass points to spawn.
+BLOCK_DESTROY_NOT_ALLOWS: You are not allowed to destroy this block.
+SPECTATORS_CHAT_NOT_ALLOWS: Spectators are not allowed to chat.
+MESSAGE_TOO_LONG: Message is too long, write something shorter!
+SPECTATOR_IN_THE_WAY: Sorry, you were in the way!
+MAY_ODDS_BE_IN_YOUR_FAVOR: May the odds be ever in your favour.
+GAMES_HAVE_BEGUN: The games have begun!
+INVINCIBLE_FOR: Everyone is invincible for <time>.
+NOW_GAMEMAKER: You are now a Gamemaker.
+NOW_SPECTATOR: You are now a Spectator.
+HEADSHOT_DEATH: <victom> was headshotted by <player>.
+PLAYERS_REMAIN: <amount> players remaining.
+HEADSHOT: Headshot!
