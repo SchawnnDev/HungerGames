@@ -4,11 +4,7 @@ import main.BGMain;
 
 import org.bukkit.Bukkit;
 
-import utilities.BGChat;
-import utilities.BGFeast;
-import utilities.BGVanish;
-import utilities.Border;
-import utilities.enums.BorderType;
+import utilities.*;
 
 public class GameTimer {
 	
@@ -27,36 +23,6 @@ public class GameTimer {
 					if(BGMain.SHOW_TIPS) {	
 						BGChat.printTipChat();
 					}
-				}
-
-				if(BGMain.GAME_ENDING_TIME <= BGMain.GAME_RUNNING_TIME) {
-					if(!BGMain.BORDERS.containsKey(BorderType.SHRINK)) {
-						if(BGMain.WORLDRADIUS > 40) {
-							Integer shrink_size = 20;
-							if(BGMain.WORLDRADIUS > 300)
-								shrink_size = 60;
-							else if(BGMain.WORLDRADIUS > 200)
-								shrink_size = 40;
-							else if(BGMain.WORLDRADIUS > 100)
-								shrink_size = 20;
-							else if(BGMain.WORLDRADIUS < 70)
-								shrink_size = 10;
-							else
-								shrink_size = BGMain.WORLDRADIUS - 40;
-							
-							BGMain.WORLDRADIUS = BGMain.WORLDRADIUS - shrink_size;
-							BGMain.BORDERS.put(BorderType.SHRINK, new Border(BGMain.spawn.getX(), BGMain.spawn.getZ(), BGMain.WORLDRADIUS - 5));
-							BGChat.printInfoChat("World-border will shrink " + shrink_size + " blocks in one minute!");
-						}
-					} else {
-						BGMain.BORDERS.remove(BorderType.STOP);
-						BGMain.BORDERS.remove(BorderType.WARN);
-						BGMain.BORDERS.put(BorderType.STOP, BGMain.BORDERS.get(BorderType.SHRINK));
-						BGMain.BORDERS.put(BorderType.WARN, new Border(BGMain.spawn.getX(), BGMain.spawn.getZ(), BGMain.WORLDRADIUS - 10));
-						BGMain.BORDERS.remove(BorderType.SHRINK);
-						BGChat.printInfoChat("World-border shrinked!");
-					}
-					
 				}
 				
 				if(BGMain.FEAST) {
