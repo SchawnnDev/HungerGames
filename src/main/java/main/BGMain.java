@@ -17,15 +17,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -37,7 +35,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
@@ -50,31 +47,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 
-import commands.BGConsole;
-import commands.BGPlayer;
+import commands.*;
 
-import threads.BGEndDB;
-import threads.BGQuery;
-import timers.GameTimer;
-import timers.InvincibilityTimer;
-import timers.PreGameTimer;
-import timers.WorldBorderTimer;
-import utilities.BGChat;
-import utilities.BGCornucopia;
-import utilities.BGFiles;
-import utilities.BGKit;
-import utilities.BGReward;
-import utilities.BGVanish;
-import utilities.Border;
-import utilities.Metrics;
-import utilities.Updater;
-import utilities.enums.BorderType;
-import utilities.enums.GameState;
-import utilities.enums.Language;
-import utilities.enums.Translation;
-
-import events.BGAbilitiesListener;
-import events.BGGameListener;
+import threads.*;
+import timers.*;
+import utilities.*;
+import events.*;
+import utilities.enums.*;
 
 public class BGMain extends JavaPlugin {		
 	public static  ReentrantLock lock = new ReentrantLock(true);
@@ -93,53 +72,55 @@ public class BGMain extends JavaPlugin {
 	public static String SERVER_TITLE = null;
 	public static Boolean ADV_CHAT_SYSTEM = true;
 	public static Boolean KIT_PREFIX = true;
-	public static Integer COUNTDOWN_SECONDS = 300;
-	public static Integer FINAL_COUNTDOWN_SECONDS = 60;
-	public static Integer MAX_GAME_RUNNING_TIME = 60;
-	public static Integer MINIMUM_PLAYERS = 4;
-	public static Integer GAME_ENDING_TIME = 50;
-	public static final Integer WINNER_PLAYERS = 1;
-	public static Boolean REGEN_WORLD = false;
-	public static Boolean RANDOM_START = false;
-	public static Boolean SHOW_TIPS = true;
-	public static Boolean COMPASS = true;
-	public static Boolean AUTO_COMPASS = false;
-	public static Boolean ADV_ABI = false;
-	public static Boolean SIMP_REW = false;
-	public static Boolean REW = false;
-	public static Boolean DEATH_SIGNS = true;
-	public static Boolean DEATH_SG_PROTECTED = true;
-	public static Boolean DEFAULT_KIT = false;
-	public static Boolean CORNUCOPIA = true;
-	public static Boolean CORNUCOPIA_CHESTS = false;
-	public static Boolean TEAM = true;
-	public static Boolean GEN_MAPS = false;
-	public static Boolean ITEM_MENU = true;
-	public static Boolean CORNUCOPIA_ITEMS = true;
-	public static Boolean CORNUCOPIA_PROTECTED = true;
-	public static Boolean FEAST = true;
-	public static Boolean FEAST_CHESTS = false;
-	public static Boolean FEAST_PROTECTED = true;
-	public static Boolean SPECTATOR_SYSTEM = false;
-	public static Boolean SQL_DSC = false;
-	public static Boolean PLAYERS_VISIBLE = false;
+	public static int COUNTDOWN_SECONDS = 300;
+	public static int FINAL_COUNTDOWN_SECONDS = 60;
+	public static int MAX_GAME_RUNNING_TIME = 60;
+	public static int MINIMUM_PLAYERS = 4;
+	public static int GAME_ENDING_TIME = 50;
+	public static final int WINNER_PLAYERS = 1;
+	public static boolean REGEN_WORLD = false;
+	public static boolean RANDOM_START = false;
+	public static boolean SHOW_TIPS = true;
+	public static boolean COMPASS = true;
+	public static boolean AUTO_COMPASS = false;
+	public static boolean ADV_ABI = false;
+	public static boolean SIMP_REW = false;
+	public static boolean REW = false;
+	public static boolean DEATH_SIGNS = true;
+	public static boolean DEATH_SG_PROTECTED = true;
+	public static boolean DEFAULT_KIT = false;
+	public static boolean CORNUCOPIA = true;
+	public static boolean CORNUCOPIA_CHESTS = false;
+	public static boolean TEAM = true;
+	public static boolean GEN_MAPS = false;
+	public static boolean ITEM_MENU = true;
+	public static boolean CORNUCOPIA_ITEMS = true;
+	public static boolean CORNUCOPIA_PROTECTED = true;
+	public static boolean FEAST = true;
+	public static boolean FEAST_CHESTS = false;
+	public static boolean FEAST_PROTECTED = true;
+	public static boolean SPECTATOR_SYSTEM = false;
+	public static boolean SQL_DSC = false;
+	public static boolean PLAYERS_VISIBLE = false;
 	public static Location spawn;
-	public static Boolean AUTO_UPDATE = true;
-	public static Boolean UPDATE_CHECK = true;
 	public static String LAST_WINNER = "";
-	public static ArrayList<Player> spectators = new ArrayList<Player>();
-	public static ArrayList<Player> gamemakers = new ArrayList<Player>();
-	public static Integer COUNTDOWN = Integer.valueOf(0);
-	public static Integer FINAL_COUNTDOWN = Integer.valueOf(0);
-	public static Integer GAME_RUNNING_TIME = Integer.valueOf(0);
-	public static HashMap<BorderType, Border> BORDERS = new HashMap<BorderType, Border>();
-	public static Integer WORLDRADIUS = Integer.valueOf(250);
-	public static Boolean SQL_USE = false;
-	public static Integer FEAST_SPAWN_TIME = 30;
-	public static Integer COINS_FOR_KILL = 1;
-	public static Integer COINS_FOR_WIN = 5;
+
+    @Getter
+	private static ArrayList<Player> spectators = new ArrayList<>();
+
+    @Getter
+	private static ArrayList<Player> gamemakers = new ArrayList<>();
+
+	public static int COUNTDOWN = 0;
+	public static int FINAL_COUNTDOWN = 0;
+	public static int GAME_RUNNING_TIME = 0;
+	public static int WORLDRADIUS = 250;
+	public static boolean SQL_USE = false;
+	public static int FEAST_SPAWN_TIME = 30;
+	public static int COINS_FOR_KILL = 1;
+	public static int COINS_FOR_WIN = 5;
 	
-	public static Integer SQL_GAMEID = null;
+	public static int SQL_GAMEID = 0;
 	public static String SQL_HOST = null;
 	public static String SQL_PORT = null;
 	public static String SQL_USER = null;
@@ -232,15 +213,6 @@ public class BGMain extends JavaPlugin {
 			getCommand("coin").setExecutor(new BGConsole());
 		else
 			console.sendMessage(ChatColor.RED+"getCommand coin returns null");
-		
-		if (getCommand("bgversion") != null)
-			getCommand("bgversion").setExecutor(new BGConsole());
-		else
-			console.sendMessage(ChatColor.RED+"getCommand bgversion returns null");
-		if(getCommand("bgdownload") != null)
-			getCommand("bgdownload").setExecutor(new BGConsole());
-		else
-			console.sendMessage(ChatColor.RED+"getCommand bgdownload returns null");
 		if(getCommand("team") != null)
 			getCommand("team").setExecutor(new BGPlayer());
 		else
@@ -255,16 +227,7 @@ public class BGMain extends JavaPlugin {
 		instance = this;
 		Bukkit.getServer().getWorlds().get(0).setDifficulty(Difficulty.PEACEFUL);
 		
-		ADV_ABI = Boolean.valueOf(getConfig().getBoolean("ADVANCED_ABILITIES"));
-				
-		//Metrics
-		try{
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-			log.info("Starting Plugin Metrics...");
-		}catch (IOException e) {
-			log.info("Error with Plugin Metrics!");
-		}
+		ADV_ABI = getConfig().getBoolean("ADVANCED_ABILITIES");
 		
 		registerEvents();
 		registerCommands();
@@ -272,51 +235,49 @@ public class BGMain extends JavaPlugin {
 		new BGChat();
 		
 		log.info("Loading configuration options.");
-		DEATH_SIGNS = Boolean.valueOf(getConfig().getBoolean("DEATH_SIGNS"));
-		DEATH_SG_PROTECTED = Boolean.valueOf(BGFiles.dsign.getBoolean("PROTECTED"));
+		DEATH_SIGNS = getConfig().getBoolean("DEATH_SIGNS");
+		DEATH_SG_PROTECTED = BGFiles.dsign.getBoolean("PROTECTED");
 		KIT_BUY_WEB = getConfig().getString("MESSAGE.KIT_BUY_WEBSITE");
 		SERVER_TITLE = getConfig().getString("MESSAGE.SERVER_TITLE");
 		HELP_MESSAGE = getConfig().getString("MESSAGE.HELP_MESSAGE");
-		RANDOM_START = Boolean.valueOf(getConfig().getBoolean("RANDOM_START"));
-		DEFAULT_KIT = Boolean.valueOf(getConfig().getBoolean("DEFAULT_KIT"));
-		SHOW_TIPS = Boolean.valueOf(getConfig().getBoolean("SHOW_TIPS"));
-		REGEN_WORLD = Boolean.valueOf(getConfig().getBoolean("REGEN_WORLD"));
-		CORNUCOPIA = Boolean.valueOf(getConfig().getBoolean("CORNUCOPIA"));
-		CORNUCOPIA_ITEMS = Boolean.valueOf(BGFiles.cornconf.getBoolean("ITEM_SPAWN"));
-		CORNUCOPIA_CHESTS = Boolean.valueOf(BGFiles.cornconf.getBoolean("CHESTS"));
-		CORNUCOPIA_PROTECTED = Boolean.valueOf(BGFiles.cornconf.getBoolean("PROTECTED"));
-		FEAST = Boolean.valueOf(getConfig().getBoolean("FEAST"));
-		FEAST_CHESTS = Boolean.valueOf(BGFiles.feastconf.getBoolean("CHESTS"));
-		FEAST_PROTECTED = Boolean.valueOf(BGFiles.feastconf.getBoolean("PROTECTED"));
-		SPECTATOR_SYSTEM = Boolean.valueOf(getConfig().getBoolean("SPECTATOR_SYSTEM"));
-		AUTO_UPDATE = Boolean.valueOf(getConfig().getBoolean("AUTO_UPDATE"));
-		UPDATE_CHECK = getConfig().getBoolean("UPDATE_CHECK");
-		TEAM = Boolean.valueOf(getConfig().getBoolean("TEAM"));
+		RANDOM_START = getConfig().getBoolean("RANDOM_START");
+		DEFAULT_KIT = getConfig().getBoolean("DEFAULT_KIT");
+		SHOW_TIPS = getConfig().getBoolean("SHOW_TIPS");
+		REGEN_WORLD = getConfig().getBoolean("REGEN_WORLD");
+		CORNUCOPIA = getConfig().getBoolean("CORNUCOPIA");
+		CORNUCOPIA_ITEMS = BGFiles.cornconf.getBoolean("ITEM_SPAWN");
+		CORNUCOPIA_CHESTS = BGFiles.cornconf.getBoolean("CHESTS");
+		CORNUCOPIA_PROTECTED = BGFiles.cornconf.getBoolean("PROTECTED");
+		FEAST = getConfig().getBoolean("FEAST");
+		FEAST_CHESTS = BGFiles.feastconf.getBoolean("CHESTS");
+		FEAST_PROTECTED = BGFiles.feastconf.getBoolean("PROTECTED");
+		SPECTATOR_SYSTEM = getConfig().getBoolean("SPECTATOR_SYSTEM");
+		TEAM = getConfig().getBoolean("TEAM");
 		NO_KIT_MSG = getConfig().getString("MESSAGE.NO_KIT_PERMISSION");
 		GAME_IN_PROGRESS_MSG = getConfig().getString("MESSAGE.GAME_PROGRESS");
 		SERVER_FULL_MSG = getConfig().getString("MESSAGE.SERVER_FULL");
 		WORLD_BORDER_MSG = getConfig().getString("MESSAGE.WORLD_BORDER");
 		MOTD_PROGRESS_MSG = getConfig().getString("MESSAGE.MOTD_PROGRESS");
 		MOTD_COUNTDOWN_MSG = getConfig().getString("MESSAGE.MOTD_COUNTDOWN");
-		ADV_CHAT_SYSTEM = Boolean.valueOf(getConfig().getBoolean("ADVANCED_CHAT"));
-		KIT_PREFIX = Boolean.valueOf(getConfig().getBoolean("KIT_PREFIX"));
-		SQL_USE = Boolean.valueOf(getConfig().getBoolean("MYSQL"));
+		ADV_CHAT_SYSTEM = getConfig().getBoolean("ADVANCED_CHAT");
+		KIT_PREFIX = getConfig().getBoolean("KIT_PREFIX");
+		SQL_USE = getConfig().getBoolean("MYSQL");
 		SQL_HOST = getConfig().getString("HOST");
 		SQL_PORT = getConfig().getString("PORT");
 		SQL_USER = getConfig().getString("USERNAME");
 		SQL_PASS = getConfig().getString("PASSWORD");
 		SQL_DATA = getConfig().getString("DATABASE");
 		SIMP_REW = getConfig().getBoolean("SIMPLE_REWARD");
-		REW = Boolean.valueOf(getConfig().getBoolean("REWARD"));
-		COINS_FOR_KILL = Integer.valueOf(getConfig().getInt("COINS_FOR_KILL"));
-		COINS_FOR_WIN = Integer.valueOf(getConfig().getInt("COINS_FOR_WIN"));
-		MINIMUM_PLAYERS = Integer.valueOf(getConfig().getInt("MINIMUM_PLAYERS_START"));	
-		MAX_GAME_RUNNING_TIME = Integer.valueOf(getConfig().getInt("TIME.MAX_GAME-MIN"));
-		COUNTDOWN_SECONDS = Integer.valueOf(getConfig().getInt("TIME.COUNTDOWN-SEC"));
+		REW = getConfig().getBoolean("REWARD");
+		COINS_FOR_KILL = getConfig().getInt("COINS_FOR_KILL");
+		COINS_FOR_WIN = getConfig().getInt("COINS_FOR_WIN");
+		MINIMUM_PLAYERS = getConfig().getInt("MINIMUM_PLAYERS_START");
+		MAX_GAME_RUNNING_TIME = getConfig().getInt("TIME.MAX_GAME-MIN");
+		COUNTDOWN_SECONDS = getConfig().getInt("TIME.COUNTDOWN-SEC");
 		GAME_ENDING_TIME = getConfig().getInt("TIME.GAME_ENDING-MIN");
-		FINAL_COUNTDOWN_SECONDS = Integer.valueOf(getConfig().getInt("TIME.FINAL_COUNTDOWN-SEC"));
-		COMPASS = Boolean.valueOf(getConfig().getBoolean("COMPASS"));
-		AUTO_COMPASS = Boolean.valueOf(getConfig().getBoolean("AUTO_COMPASS"));
+		FINAL_COUNTDOWN_SECONDS = getConfig().getInt("TIME.FINAL_COUNTDOWN-SEC");
+		COMPASS = getConfig().getBoolean("COMPASS");
+		AUTO_COMPASS = getConfig().getBoolean("AUTO_COMPASS");
 		ITEM_MENU = getConfig().getBoolean("ITEM_MENU");
 		PLAYERS_VISIBLE = getConfig().getBoolean("PLAYERS_VISIBLE");
 				
@@ -379,8 +340,6 @@ public class BGMain extends JavaPlugin {
 
 
 		spawn = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
-		BORDERS.put(BorderType.STOP, new Border(spawn.getX(), spawn.getZ(), BGMain.WORLDRADIUS));
-		BORDERS.put(BorderType.WARN, new Border(spawn.getX(), spawn.getZ(), BGMain.WORLDRADIUS - 10));
 
 		COUNTDOWN = COUNTDOWN_SECONDS;
 		FINAL_COUNTDOWN = FINAL_COUNTDOWN_SECONDS;
@@ -400,23 +359,6 @@ public class BGMain extends JavaPlugin {
 		Bukkit.getServer().getWorlds().get(0).loadChunk(loc.getChunk());
 		new PreGameTimer();
 		new WorldBorderTimer();
-		
-		if(UPDATE_CHECK) {
-			Updater updater = new Updater(BGMain.instance, "bukkitgames", BGMain.getPFile(), Updater.UpdateType.NO_DOWNLOAD, false);
-			boolean update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE;
-			
-			if(update) {
-				log.info("-------- NEW UPDATE --------");
-				log.info("New version available (" + updater.getLatestVersionString() + ")!");
-				if(AUTO_UPDATE)
-					log.info("Type /bgdownload to install this update.");
-				else
-					log.info("Go to BukkitDev and install it, or enable auto-update in config.yml!");
-				log.info("-------- NEW UPDATE --------");
-			}
-		} else {
-			log.warning("You disabled update checking... :(");
-		}
 
 		PluginDescriptionFile pdfFile = getDescription();
 		log.info("Plugin enabled");
@@ -431,7 +373,7 @@ public class BGMain extends JavaPlugin {
 		Bukkit.getServer().getScheduler().cancelAllTasks();
 				
 		if (SQL_USE) {
-			if (SQL_GAMEID != null) {
+			if (SQL_GAMEID != 0) {
 				Integer PL_ID = getPlayerID(NEW_WINNER);
 				SQLquery("UPDATE `GAMES` SET `ENDTIME` = NOW(), `REF_WINNER` = "
 						+ PL_ID + " WHERE `ID` = " + SQL_GAMEID + " ;");
@@ -522,9 +464,6 @@ public class BGMain extends JavaPlugin {
 				p.teleport(loc);
 			} else {
 				Location tploc = getRandomLocation();
-				while(!inBorder(tploc,BorderType.WARN)) {
-					tploc = getRandomLocation();
-				}
 				tploc.setY(Bukkit.getServer().getWorlds().get(0).getHighestBlockYAt(tploc) + 1.5);
 				p.teleport(tploc);
 			}
@@ -609,52 +548,6 @@ public class BGMain extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-	
-	public static boolean inBorder(Location c, BorderType t) {
-		if(t == BorderType.STOP) {
-			return inBorderCheck(c, BorderType.STOP);
-		}
-		
-		if(t == BorderType.WARN) {
-			if(!inBorderCheck(c, BorderType.WARN) && inBorderCheck(c, BorderType.STOP))
-				return false;
-			else
-				return true;
-		}
-		
-		if(t == BorderType.SHRINK) {
-			if(BORDERS.containsKey(BorderType.SHRINK))
-				return inBorderCheck(c, BorderType.SHRINK);
-			else
-				return true;
-		}
-		return true;
-	}
-	
-	private static boolean inBorderCheck(Location checkHere, BorderType t) {
-		if(!BORDERS.containsKey(t))
-			return true;
-		Border border = BORDERS.get(t);
-		Location l = new Location(checkHere.getWorld(), border.centerX, checkHere.getY(), border.centerZ);
-		if(l.distance(checkHere) > border.radius) //CPU intensive :(
-			return false;
-		
-		return true;
-		
-		/*
-		 * TODO: This code doesn't work right
-		int X = (int) Math.abs(border.centerX - checkHere.getBlockX());
-		int Z = (int) Math.abs(border.centerZ - checkHere.getBlockZ());
-		if ((X < border.definiteSq) && (Z < border.definiteSq))
-			return true;
-		if ((X > border.radius) || (Z > border.radius))
-			return true;;
-		if (X * X + Z * Z < border.radiusSq)
-			return true;
-
-		return false;
-		*/
-	}
 		
 	public static Location getSpawn() {
 		Location loc = Bukkit.getWorlds().get(0).getSpawnLocation();
@@ -663,9 +556,9 @@ public class BGMain extends JavaPlugin {
 	}
 
 	public static Player[] getGamers() {
-		ArrayList<Player> gamers = new ArrayList<Player>();
-		Player[] list = Bukkit.getOnlinePlayers();
-		for (Player p : list) {
+		ArrayList<Player> gamers = new ArrayList<>();
+
+		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (!BGMain.isSpectator(p) && !BGMain.isGameMaker(p)) {
 				gamers.add(p);
 			}
@@ -674,12 +567,7 @@ public class BGMain extends JavaPlugin {
 	}
 
 	public static Player[] getPlayers() {
-		ArrayList<Player> players = new ArrayList<Player>();
-		Player[] onlineplayers = Bukkit.getOnlinePlayers();
-		for (int i = 0; i < onlineplayers.length; i++) {
-			players.add(onlineplayers[i]);
-		}
-		return (Player[]) players.toArray(new Player[0]);
+        return (Player[]) Bukkit.getOnlinePlayers().toArray();
 	}
 
 	public static Location randomLocation(Chunk c) {
@@ -705,9 +593,14 @@ public class BGMain extends JavaPlugin {
 				(random.nextBoolean() ? 1 : -1) * random.nextInt(WORLDRADIUS));
 			int newY = Bukkit.getWorlds().get(0).getHighestBlockYAt(loc);
 			loc.setY(newY);
-		} while(!BGMain.inBorder(loc, BorderType.WARN));
+		} while(!BGMain.inBorder(loc));
 		return loc;
 	}
+
+    public static boolean inBorder(Location loc){
+        // Actually useless
+        return false;
+    }
 
 	public static void checkwinner() {
 		if (getGamers().length <= WINNER_PLAYERS)
@@ -744,7 +637,7 @@ public class BGMain extends JavaPlugin {
 				}
 				
 				if(REW) {
-					if (getPlayerID(winnername) == null) {
+					if (getPlayerID(winnername) == 0) {
 						BGReward.createUser(winnername);
 						BGReward.giveCoins(winnername, BGMain.COINS_FOR_WIN);
 					} else {
@@ -834,21 +727,21 @@ public class BGMain extends JavaPlugin {
 		dir.delete();
 	}
 
-	public static String TIME(Integer i) {
-		if (i.intValue() >= 60) {
-			Integer time = Integer.valueOf(i.intValue() / 60);
+	public static String TIME(int i) {
+		if (i >= 60) {
+			int time = i / 60;
 			String add = "";
 			if (time > 1) {
 				add = "s";
 			}
 			return time + " minute" + add;
 		}
-		Integer time = i;
+        int time = i;
 		String add = "";
 		if (time > 1) {
 			add = "s";
 		}
-		return time + " second" + add;
+		return time + " seconde" + add;
 	}
 
 	public static boolean winner(Player p) {
@@ -862,7 +755,7 @@ public class BGMain extends JavaPlugin {
 		}
 	}
 
-	public static Integer getPlayerID(String playername) {
+	public static int getPlayerID(String playername) {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet r = stmt
@@ -872,9 +765,9 @@ public class BGMain extends JavaPlugin {
 			if (r.getRow() == 0) {
 				stmt.close();
 				r.close();
-				return null;
+				return 0;
 			}
-			Integer PL_ID = r.getInt("ID");
+			int PL_ID = r.getInt("ID");
 			stmt.close();
 			r.close();
 			return PL_ID;
@@ -883,11 +776,11 @@ public class BGMain extends JavaPlugin {
 					+ "SELECT `ID`, `NAME` FROM `PLAYERS` WHERE `NAME` = '"
 					+ playername + "' ;");
 			System.err.println("MySQL-Error: " + ex.getMessage());
-			return null;
+			return 0;
 		} catch (NullPointerException ex) {
 			System.err
 					.println("Error while performing a query. (NullPointerException)");
-			return null;
+			return 0;
 		}
 	}
 
@@ -908,9 +801,8 @@ public class BGMain extends JavaPlugin {
 		}
 	}
 
-	public static Connection SQLgetConnection() {
-		return con;
-	}
+    @Getter
+	public static Connection SQLConnection = con;
 
 	public static void SQLquery(String sql) {
 		BGQuery bq = new BGQuery(sql, log, con, instance);
@@ -926,17 +818,17 @@ public class BGMain extends JavaPlugin {
 		executor.shutdown();
 	}
 	
-	public static Integer getCoins(Integer playerID) {
+	public static int getCoins(UUID player) {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet r = stmt
 					.executeQuery("SELECT `COINS`, `REF_PLAYER` FROM `REWARD` WHERE `REF_PLAYER` = "
-							+ playerID + " ;");
+							+ player + " ;");
 			r.last();
 			if (r.getRow() == 0) {
 				stmt.close();
 				r.close();
-				return null;
+				return 0;
 			}
 			Integer PL_ID = r.getInt("COINS");
 			stmt.close();
@@ -945,12 +837,12 @@ public class BGMain extends JavaPlugin {
 		} catch (SQLException ex) {
 			log.warning("Error with following query: "
 					+ "SELECT `COINS`, `REF_PLAYER` FROM `REWARD` WHERE `REF_PLAYER` = "
-					+ playerID + " ;");
+					+ player + " ;");
 			System.err.println("MySQL-Error: " + ex.getMessage());
-			return null;
+			return 0;
 		} catch (NullPointerException ex) {
 			log.warning("Error while performing a query. (NullPointerException)");
-			return null;
+			return 0;
 		}
 	}
 	
@@ -969,23 +861,15 @@ public class BGMain extends JavaPlugin {
 		BGVanish.makeVisible(p);
 	}
 	
-	public static Boolean isGameMaker(Player p) {
+	public static boolean isGameMaker(Player p) {
 		return gamemakers.contains(p);
 	}
 	
-	public static Boolean isSpectator(Player p) {
+	public static boolean isSpectator(Player p) {
 		if(isGameMaker(p))
 			return false;
 		
 		return spectators.contains(p);
-	}
-	
-	public static ArrayList<Player> getSpectators() {
-		return spectators;
-	}
-	
-	public static ArrayList<Player> getGamemakers() {
-		return gamemakers;
 	}
 	
 	public static void addSpectator(Player p) {
@@ -1017,34 +901,11 @@ public class BGMain extends JavaPlugin {
 	public static File getPFile() {
 		return instance.getFile();
 	}
-	
-	public static void checkVersion(CommandSender sender, Player p) {
-		if(!UPDATE_CHECK) {
-			if(p != null)
-				BGChat.printPlayerChat(p, ChatColor.GRAY + "Current version of The BukkitGames: " + BGMain.instance.getDescription().getVersion() + " (Update checking disabled!)");
-			else
-				sender.sendMessage(ChatColor.GRAY + "Current version of The BukkitGames: " + BGMain.instance.getDescription().getVersion() + " (Update checking disabled!)");
-			return;
-		}
-		Updater updater = new Updater(BGMain.instance, "bukkitgames", BGMain.getPFile(), Updater.UpdateType.NO_DOWNLOAD, false);
-		boolean update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE;
-		if (update) {
-			String newversion = updater.getLatestVersionString();
-			if(p != null)
-				BGChat.printPlayerChat(p, ChatColor.GREEN + "Update available: " + newversion + " /bgdownload");
-			else
-				sender.sendMessage(ChatColor.GREEN + "Update available: " + newversion + " /bgdownload");
-		} else {
-			if(p != null)
-				BGChat.printPlayerChat(p, ChatColor.GRAY + "Current version of The BukkitGames: " + BGMain.instance.getDescription().getVersion());
-			else
-				sender.sendMessage(ChatColor.GRAY + "Current version of The BukkitGames: " + BGMain.instance.getDescription().getVersion());
-		}
-	}
+
 	
 	public static ArrayList<Player> getOnlineOps() {
-		ArrayList<Player> ops = new ArrayList<Player>();
-		for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+		ArrayList<Player> ops = new ArrayList<>();
+		for(Player p : Bukkit.getOnlinePlayers()) {
 			if(p.isOp())
 				ops.add(p);
 		}

@@ -18,7 +18,7 @@ import utilities.enums.GameState;
 public class WorldBorderTimer {
 
 	private static Integer shed_id = null;
-	private static HashMap<Player, Location> locations = new HashMap<Player, Location>();
+	private static HashMap<Player, Location> locations = new HashMap<>();
 
 	public WorldBorderTimer() {
 		shed_id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(BGMain.instance, new Runnable() {
@@ -26,7 +26,7 @@ public class WorldBorderTimer {
 			public void run() {				
 				Random r = new Random();
 				for(Player p : BGMain.getPlayers()) {						
-					if (!BGMain.inBorder(p.getLocation(), BorderType.STOP)) {
+					if (!BGMain.inBorder(p.getLocation())) {
 						p.playSound(p.getLocation(), Sound.FIZZ, 1.0F, (byte) 1);
 						BGChat.printPlayerChat(p, ChatColor.RED + "" +  ChatColor.BOLD + BGMain.instance.getConfig().getString("MESSAGE.WORLD_BORDER"));
 						
@@ -34,7 +34,7 @@ public class WorldBorderTimer {
 							if(p.isInsideVehicle())
 								p.getVehicle().eject();
 							
-							if(locations.containsKey(p) && BGMain.inBorder(locations.get(p), BorderType.STOP))
+							if(locations.containsKey(p) && BGMain.inBorder(locations.get(p)))
 								p.teleport(locations.get(p));
 							else
 								p.teleport(BGMain.getSpawn());
@@ -47,13 +47,13 @@ public class WorldBorderTimer {
 						continue;
 					}
 					
-					if(BGMain.GAMESTATE != GameState.PREGAME && !BGMain.inBorder(p.getLocation(), BorderType.SHRINK)) {
+					if(BGMain.GAMESTATE != GameState.PREGAME && !BGMain.inBorder(p.getLocation())) {
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, (byte) 1);
 						BGChat.printPlayerChat(p, ChatColor.RED + "" + ChatColor.ITALIC + "You will be outside the shrinked world-border!");
 						continue;
 					}
 					
-					if(BGMain.GAMESTATE != GameState.PREGAME && !BGMain.inBorder(p.getLocation(), BorderType.WARN)) {
+					if(BGMain.GAMESTATE != GameState.PREGAME && !BGMain.inBorder(p.getLocation())) {
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, (byte) 1);
 						BGChat.printPlayerChat(p, ChatColor.RED + "" + ChatColor.ITALIC + "You are coming close to the world-border!");
 					}

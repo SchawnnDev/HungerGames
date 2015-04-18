@@ -1,15 +1,13 @@
 package utilities;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import main.BGMain;
 
 import org.bukkit.entity.Player;
 
 public class BGVanish {
-	Logger log = BGMain.getPluginLogger();
-	static ArrayList<String> vanished = new ArrayList<String>();
+	static ArrayList<String> vanished = new ArrayList<>();
 
 	public static void makeVanished(Player p) {
 		for (Player player : BGMain.getPlayers()) {
