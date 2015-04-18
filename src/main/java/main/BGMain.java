@@ -127,14 +127,15 @@ public class BGMain extends JavaPlugin {
 	public static String SQL_PASS = null;
 	public static String SQL_DATA = null;
 	public static Connection con = null;
-	
+
+    @Getter
 	public static BGMain instance;
-	public static Logger log;
+    @Getter
+	private static Logger log;
 	
 	public void onLoad() {
 		instance = this;
-		log = getPluginLogger();
-		
+		log = getLogger();
 		try {
 			new BGFiles();
 		} catch (Exception e) {
@@ -358,7 +359,6 @@ public class BGMain extends JavaPlugin {
 		Location loc = randomLocation(spawn.getChunk()).add(0.0D, 30.0D,0.0D);
 		Bukkit.getServer().getWorlds().get(0).loadChunk(loc.getChunk());
 		new PreGameTimer();
-		new WorldBorderTimer();
 
 		PluginDescriptionFile pdfFile = getDescription();
 		log.info("Plugin enabled");
@@ -644,8 +644,8 @@ public class BGMain extends JavaPlugin {
 						BGReward.giveCoins(winnername, BGMain.COINS_FOR_WIN);
 					}
 				}
-				final Boolean R = REW;
-				final Integer CFW = COINS_FOR_WIN;
+				final boolean R = REW;
+				final int CFW = COINS_FOR_WIN;
 				String text = "";
 				
 				if(R && CFW != 0) {
@@ -893,15 +893,6 @@ public class BGMain extends JavaPlugin {
 		p.getInventory().clear();
 		BGVanish.makeVisible(p);
 	}
-	
-	public static Logger getPluginLogger() {
-		return instance.getLogger();
-	}
-	
-	public static File getPFile() {
-		return instance.getFile();
-	}
-
 	
 	public static ArrayList<Player> getOnlineOps() {
 		ArrayList<Player> ops = new ArrayList<>();
