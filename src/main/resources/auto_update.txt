@@ -1,8 +1,0 @@
-=== AUTO-UPDATE INFORMATION ===
-You have updated the BukkitGames with the build-in updater.
-
-The old configuration files have been put into '/plugins/#updatefolder#/The_BukkitGames-old/'. 
-'#updatefolder#' is set in the 'bukkit.yml'. Usually it is 'update'.
-
-You can now compare your old configuration files with the new generated ones and customize them.
-Thank you for using the BukkitGames.
