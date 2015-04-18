@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-  
+
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.4.7-R0.1</version>
+            <version>1.8-R0.1</version>
         </dependency>
     </dependencies>
 
