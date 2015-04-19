@@ -309,11 +309,6 @@ public class BGMain extends JavaPlugin {
 		if(CORNUCOPIA) {
 			BGCornucopia.createCorn();
 		}
-		
-		if(BGMain.WORLDRADIUS < 60) {
-			log.warning("Worldborder radius has to be 60 or higher!");
-			getServer().getPluginManager().disablePlugin(this);
-		}
 
 		log.info("Getting winner of last game.");
 		BufferedReader br = null;
@@ -344,7 +339,7 @@ public class BGMain extends JavaPlugin {
 
 		COUNTDOWN = COUNTDOWN_SECONDS;
 		FINAL_COUNTDOWN = FINAL_COUNTDOWN_SECONDS;
-		GAME_RUNNING_TIME = Integer.valueOf(0);
+		GAME_RUNNING_TIME = 0;
 
 		BGMain.GAMESTATE = GameState.PREGAME;
 
@@ -374,7 +369,7 @@ public class BGMain extends JavaPlugin {
 				
 		if (SQL_USE) {
 			if (SQL_GAMEID != 0) {
-				Integer PL_ID = getPlayerID(NEW_WINNER);
+				int PL_ID = getPlayerID(Bukkit.getPlayer(NEW_WINNER).getUniqueId());
 				SQLquery("UPDATE `GAMES` SET `ENDTIME` = NOW(), `REF_WINNER` = "
 						+ PL_ID + " WHERE `ID` = " + SQL_GAMEID + " ;");
 				SQL_DSC = true;
@@ -483,7 +478,7 @@ public class BGMain extends JavaPlugin {
 			
 			BGKit.giveKit(p);
 			if (SQL_USE & !BGMain.isSpectator(p)) {
-				Integer PL_ID = getPlayerID(p.getName());
+				int PL_ID = getPlayerID(p.getUniqueId());
 				SQLquery("INSERT INTO `PLAYS` (`REF_PLAYER`, `REF_GAME`, `KIT`) VALUES ("
 						+ PL_ID
 						+ ","
@@ -610,6 +605,7 @@ public class BGMain extends JavaPlugin {
 			} else {
 				GameTimer.cancel();
 				String winnername = getGamers()[0].getName();
+                UUID winner = ((Player)getGamers()[0]).getUniqueId();
 				NEW_WINNER = winnername;
 				log.info("GAME ENDED! Winner: " + winnername);
 				try {
@@ -629,7 +625,7 @@ public class BGMain extends JavaPlugin {
 				pl.setGameMode(GameMode.CREATIVE);
 				
 				if(SQL_USE) {
-					Integer PL_ID = getPlayerID(winnername);
+					Integer PL_ID = getPlayerID(winner);
 					SQLquery("UPDATE `PLAYS` SET deathtime = NOW(), `DEATH_REASON` = 'WINNER' WHERE `REF_PLAYER` = "
 							+ PL_ID
 							+ " AND `REF_GAME` = "
@@ -637,7 +633,7 @@ public class BGMain extends JavaPlugin {
 				}
 				
 				if(REW) {
-					if (getPlayerID(winnername) == 0) {
+					if (getPlayerID(winner) == 0) {
 						BGReward.createUser(winnername);
 						BGReward.giveCoins(winnername, BGMain.COINS_FOR_WIN);
 					} else {
@@ -755,12 +751,12 @@ public class BGMain extends JavaPlugin {
 		}
 	}
 
-	public static int getPlayerID(String playername) {
+	public static int getPlayerID(UUID player) {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet r = stmt
 					.executeQuery("SELECT `ID`, `NAME` FROM `PLAYERS` WHERE `NAME` = '"
-							+ playername + "' ;");
+							+ player.toString() + "' ;");
 			r.last();
 			if (r.getRow() == 0) {
 				stmt.close();
@@ -774,7 +770,7 @@ public class BGMain extends JavaPlugin {
 		} catch (SQLException ex) {
 			System.err.println("Error with following query: "
 					+ "SELECT `ID`, `NAME` FROM `PLAYERS` WHERE `NAME` = '"
-					+ playername + "' ;");
+					+ player.toString() + "' ;");
 			System.err.println("MySQL-Error: " + ex.getMessage());
 			return 0;
 		} catch (NullPointerException ex) {
@@ -823,7 +819,7 @@ public class BGMain extends JavaPlugin {
 			Statement stmt = con.createStatement();
 			ResultSet r = stmt
 					.executeQuery("SELECT `COINS`, `REF_PLAYER` FROM `REWARD` WHERE `REF_PLAYER` = "
-							+ player + " ;");
+							+ player.toString() + " ;");
 			r.last();
 			if (r.getRow() == 0) {
 				stmt.close();

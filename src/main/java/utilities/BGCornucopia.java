@@ -18,10 +18,10 @@ import org.bukkit.inventory.ItemStack;
 public class BGCornucopia {
 	private static Block mainBlock;
 	private static Integer radius = 10;
-	private static Logger log = BGMain.getPluginLogger();
+	private static Logger log = BGMain.getLog();
 	private static Chest[] chests = new Chest[8];
 	
-	private static ArrayList<Location> cblocks = new ArrayList<Location>();
+	private static ArrayList<Location> cblocks = new ArrayList<>();
 
 	
 	public static void createCorn() {

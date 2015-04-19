@@ -3,76 +3,30 @@ package events;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import main.BGMain;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.event.vehicle.VehicleDestroyEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
+import org.bukkit.*;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.*;
+import org.bukkit.event.server.*;
+import org.bukkit.event.vehicle.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.util.Vector;
 
-import utilities.BGChat;
-import utilities.BGCornucopia;
-import utilities.BGFeast;
-import utilities.BGFiles;
-import utilities.BGKit;
-import utilities.BGReward;
-import utilities.BGSign;
-import utilities.BGTeam;
-import utilities.BGVanish;
-import utilities.enums.BorderType;
-import utilities.enums.GameState;
-import utilities.enums.Translation;
+import utilities.*;
+import utilities.enums.*;
 
 public class BGGameListener implements Listener {
-	Logger log = BGMain.getPluginLogger();
+	Logger log = BGMain.getLog();
 	public static String last_quit;
 	public static String last_headshot;
 	
@@ -98,7 +52,7 @@ public class BGGameListener implements Listener {
 
 
 		if ((p.getItemInHand().getType() == Material.COMPASS & BGMain.COMPASS)) {
-			Boolean found = Boolean.valueOf(false);
+			boolean found = false;
 			for (int i = 0; i < 300; i++) {
 				List<Entity> entities = p.getNearbyEntities(i, 64.0D, i);
 				for (Entity e : entities) {
@@ -113,15 +67,15 @@ public class BGGameListener implements Listener {
 							e.getLocation());
 					DecimalFormat df = new DecimalFormat("##.#");
 					BGChat.printPlayerChat(p, Translation.COMPASS_TRACK.t().replace("<player>", ((Player) e).getName()).replace("<distance>", df.format(distance)));
-					found = Boolean.valueOf(true);
+					found = true;
 					break;
 				}
 
-				if (found.booleanValue()) {
+				if (found) {
 					break;
 				}
 			}
-			if (!found.booleanValue()) {
+			if (!found) {
 				BGChat.printPlayerChat(p, Translation.COMPASS_NOT_TRACK.t());
 				p.setCompassTarget(BGMain.spawn);
 			}
@@ -190,7 +144,7 @@ public class BGGameListener implements Listener {
 			return;
 		}
 		
-		ArrayList<Block> remove = new ArrayList<Block>();
+		ArrayList<Block> remove = new ArrayList<>();
 		for(Block b : event.blockList()) {
 			if(BGCornucopia.isCornucopiaBlock(b)) {
 				remove.add(b);
@@ -236,12 +190,12 @@ public class BGGameListener implements Listener {
 				!(p.hasPermission("bg.admin.logingame") || p.hasPermission("bg.admin.*"))) {
 			event.setKickMessage(ChatColor.RED + BGMain.GAME_IN_PROGRESS_MSG);
 			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, event.getKickMessage());
-		} else if (event.getResult() == Result.KICK_FULL) {
+		} else if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
 			if (p.hasPermission("bg.vip.full") || p.hasPermission("bg.admin.full") 
 					|| Bukkit.getServer().getMaxPlayers() > BGMain.getGamers().length) {
 				event.allow();
 			} else {
-				event.setKickMessage(ChatColor.RED + BGMain.SERVER_FULL_MSG.replace("<players>", Integer.toString(Bukkit.getOnlinePlayers().length)));
+				event.setKickMessage(ChatColor.RED + BGMain.SERVER_FULL_MSG.replace("<players>", Integer.toString(Bukkit.getOnlinePlayers().size())));
 			}
 		}
 
@@ -252,32 +206,32 @@ public class BGGameListener implements Listener {
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player p = event.getPlayer();
 		
-		if (!BGMain.COMPASS.booleanValue() || !BGMain.AUTO_COMPASS.booleanValue())
+		if (!BGMain.COMPASS || !BGMain.AUTO_COMPASS)
 			return;
-		Boolean found = Boolean.valueOf(false);
+		boolean found = false;
 		for (int i = 0; i < 300; i++) {
 			List<Entity> entities = p.getNearbyEntities(i, 64.0D, i);
 			for (Entity e : entities) {
 				if ((e.getType().equals(EntityType.PLAYER)) && !BGMain.isSpectator((Player) e)) {
 					p.setCompassTarget(e.getLocation());
-					found = Boolean.valueOf(true);
+					found = true;
 					break;
 				}
 			}
 			if (found)
 				break;
 		}
-		if (!found.booleanValue()) {
+		if (!found) {
 			p.setCompassTarget(BGMain.spawn);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
-		if(event.getCause() == TeleportCause.NETHER_PORTAL || event.getCause() == TeleportCause.END_PORTAL)
+		if(event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL || event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL)
 			event.setCancelled(true);
 		
-		if(!BGMain.inBorder(event.getTo(), BorderType.STOP)) {
+		if(!BGMain.inBorder(event.getTo())) {
 			event.getPlayer().teleport(event.getFrom());
 			event.setCancelled(true);
 		}
@@ -342,8 +296,8 @@ public class BGGameListener implements Listener {
 		
 		if(BGMain.GAMESTATE == GameState.PREGAME) {
 		List<String> pages = BGFiles.bookconf.getStringList("content");
-		List<String> content = new ArrayList<String>();
-		List<String> page = new ArrayList<String>();
+		List<String> content = new ArrayList<>();
+		List<String> page = new ArrayList<>();
 		for(String line : pages)  {
 			line = line.replace("<server_title>", BGMain.SERVER_TITLE);
 			line = line.replace("<space>", ChatColor.RESET + "\n");
@@ -377,7 +331,7 @@ public class BGGameListener implements Listener {
 		String playerName = p.getName();
 		
 		if (BGMain.SQL_USE) {
-			Integer PL_ID = BGMain.getPlayerID(playerName);
+			Integer PL_ID = BGMain.getPlayerID(p.getUniqueId());
 			if (PL_ID == null) {
 				BGMain.SQLquery("INSERT INTO `PLAYERS` (`NAME`) VALUES ('"
 						+ playerName + "') ;");
@@ -386,10 +340,6 @@ public class BGGameListener implements Listener {
 		
 		if (BGMain.REW) {
 			BGReward.createUser(playerName);
-		}
-		
-		if(p.hasPermission("bg.admin.check")) {
-			BGMain.checkVersion(null, p);
 		}
 	}
 
@@ -555,7 +505,7 @@ public class BGGameListener implements Listener {
 							BGMain.checkwinner();
 
 							if (BGMain.SQL_USE) {
-								Integer PL_ID = BGMain.getPlayerID(last_quit);
+								Integer PL_ID = BGMain.getPlayerID(Bukkit.getPlayer(last_quit).getUniqueId());
 								if (last_quit == BGMain.NEW_WINNER) {
 									
 								} else {
@@ -698,11 +648,11 @@ public class BGGameListener implements Listener {
 			Player p = event.getEntity();
 
 			if (BGMain.SQL_USE) {
-				Integer PL_ID = BGMain.getPlayerID(p.getName());
+				Integer PL_ID = BGMain.getPlayerID(p.getUniqueId());
 
 				Integer KL_ID = null;
 				if (p.getKiller() != null) {
-					KL_ID = BGMain.getPlayerID(p.getKiller().getName());
+					KL_ID = BGMain.getPlayerID(p.getUniqueId());
 				} else {
 					KL_ID = null;
 				}

@@ -35,7 +35,7 @@ private static Integer shed_id = null;
 				} else {
 					BGChat.printTimeChat("");
 					BGChat.printTimeChat("Invincibility was worn off.");
-					BGMain.log.info("Game phase: 3 - Fighting");
+					BGMain.getLog().info("Game phase: 3 - Fighting");
 					for (Player pl : BGMain.getGamers()) {
 						pl.playSound(pl.getLocation(), Sound.ANVIL_LAND, 1.0F, (byte) 1);
 					}

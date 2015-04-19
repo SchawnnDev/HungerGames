@@ -19,10 +19,10 @@ import org.bukkit.potion.PotionEffectType;
 
 
 public class BGChat {
-	private static Logger log = BGMain.getPluginLogger();
+	private static Logger log = BGMain.getLog();
 	static Integer TIP_COUNT = 0;
-	static ArrayList<String> TIPS = new ArrayList<String>();
-	static HashMap<Player, IconMenu> MENUS = new HashMap<Player, IconMenu>();
+	static ArrayList<String> TIPS = new ArrayList<>();
+	static HashMap<Player, IconMenu> MENUS = new HashMap<>();
 	
 	static Boolean update = true;
 

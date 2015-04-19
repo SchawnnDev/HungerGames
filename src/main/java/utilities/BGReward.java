@@ -1,21 +1,22 @@
 package utilities;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 
 import main.BGMain;
 
 public class BGReward {
-	public static HashMap<String, String> BOUGHT_KITS = new HashMap<String, String>();
-	public static HashMap<String, Integer> TRYS = new HashMap<String, Integer>();
+	public static HashMap<String, String> BOUGHT_KITS = new HashMap<>();
+	public static HashMap<String, Integer> TRYS = new HashMap<>();
 	
 	public static void createUser(final String playerName) {
-		Integer PL_ID = BGMain.getPlayerID(playerName);
+		Integer PL_ID = BGMain.getPlayerID(Bukkit.getPlayer(playerName).getUniqueId());
 		if(PL_ID == null) {
 			if(TRYS.containsKey(playerName)) {
 				if(TRYS.get(playerName) >= 5) {
-					BGMain.getPluginLogger().warning("Could not create a reward profile for '" + playerName + "'!");
+					BGMain.getLog().warning("Could not create a reward profile for '" + playerName + "'!");
 					TRYS.remove(playerName);
 					return;
 				}
@@ -30,8 +31,8 @@ public class BGReward {
 			}, 20*1);
 			return;
 		}
-		if (BGMain.getCoins(BGMain.getPlayerID(playerName)) == null) {
-			BGMain.SQLquery("INSERT INTO REWARD (REF_PLAYER, COINS) VALUES ("+ BGMain.getPlayerID(playerName) + ", 0)");
+		if (BGMain.getCoins(Bukkit.getPlayer(playerName).getUniqueId()) != -1) {
+			BGMain.SQLquery("INSERT INTO REWARD (REF_PLAYER, COINS) VALUES ("+ Bukkit.getPlayer(playerName).getUniqueId().toString() + ", 0)");
 			if(TRYS.containsKey(playerName)) 
 				TRYS.remove(playerName);
 		}
@@ -39,12 +40,12 @@ public class BGReward {
 	
 	public static void giveCoins(String playerName, int coins) {
 		
-		BGMain.SQLquery("UPDATE REWARD SET COINS = (COINS+"+coins+") WHERE REF_PLAYER=" + BGMain.getPlayerID(playerName));
+		BGMain.SQLquery("UPDATE REWARD SET COINS = (COINS+"+coins+") WHERE REF_PLAYER=" +Bukkit.getPlayer(playerName).getUniqueId().toString());
 	}
 	
 	public static void takeCoins(String playerName, int coins) {
 		
-		BGMain.SQLquery("UPDATE REWARD SET COINS = (COINS-"+coins+") WHERE REF_PLAYER=" + BGMain.getPlayerID(playerName));
+		BGMain.SQLquery("UPDATE REWARD SET COINS = (COINS-"+coins+") WHERE REF_PLAYER=" + Bukkit.getPlayer(playerName).getUniqueId().toString());
 	}
 	
 	public static void coinUse(String playerName, String kitName) {
@@ -54,7 +55,7 @@ public class BGReward {
 	
 	public static boolean sendCoins(String sender, String dest, int coins) {
 		
-		int scoins = (int) BGMain.getCoins(BGMain.getPlayerID(sender));
+		int scoins = (int) BGMain.getCoins(Bukkit.getPlayer(sender).getUniqueId());
 		if(scoins >= coins) {
 			takeCoins(sender, coins);
 			giveCoins(dest, coins);

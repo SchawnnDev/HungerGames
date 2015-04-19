@@ -20,10 +20,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class BGKit {
-	static Logger log = BGMain.getPluginLogger();
-	static HashMap<Player, String> KIT = new HashMap<Player, String>();
-	public static ArrayList<String> kits = new ArrayList<String>();
-	private static HashMap<Integer, String> ABILITY_DESC = new HashMap<Integer, String>();
+	static Logger log = BGMain.getLog();
+	static HashMap<Player, String> KIT = new HashMap<>();
+	public static ArrayList<String> kits = new ArrayList<>();
+	private static HashMap<Integer, String> ABILITY_DESC = new HashMap<>();
 
 	public BGKit() {
 		Set<String> kitList = BGFiles.kitconf.getKeys(false);
@@ -77,7 +77,7 @@ public class BGKit {
 		p.setLevel(0);
 		
 		if (!KIT.containsKey(p)) {
-			if (BGMain.COMPASS.booleanValue()) {
+			if (BGMain.COMPASS) {
 				p.getInventory().addItem(
 						new ItemStack[] { new ItemStack(Material.COMPASS, 1) });
 			}
@@ -409,7 +409,7 @@ public class BGKit {
 			}
 		}
 
-		if (BGMain.COMPASS.booleanValue())
+		if (BGMain.COMPASS)
 			p.getInventory().addItem(
 					new ItemStack[] { new ItemStack(Material.COMPASS, 1) });
 		} catch(Exception ex) {
@@ -472,14 +472,14 @@ public class BGKit {
 					+ ChatColor.WHITE + player.getName() + ChatColor.WHITE);
 	}
 	
-	public static Boolean hasAbility(Player player, Integer ability) {
+	public static boolean hasAbility(Player player, int ability) {
 		
 		if (!KIT.containsKey(player)) {
 			if (BGMain.DEFAULT_KIT) {
 				ConfigurationSection def = BGFiles.kitconf.getConfigurationSection("default");
 				List<Integer> s = def.getIntegerList("ABILITY");
-				for(Integer i : s) {
-					if (i.equals(ability)) {
+				for(int i : s) {
+					if (i==ability) {
 					return true;
 					}
 				}

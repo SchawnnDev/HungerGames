@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 
 public class BGFiles {	
-	Logger log = BGMain.getPluginLogger();
+	Logger log = BGMain.getLog();
 	
 	public static FileConfiguration abconf;
 	public static FileConfiguration bookconf;

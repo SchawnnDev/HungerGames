@@ -15,13 +15,12 @@ import org.bukkit.entity.Player;
 import utilities.BGChat;
 import utilities.BGKit;
 import utilities.BGTeam;
-import utilities.enums.BorderType;
 import utilities.enums.GameState;
 import utilities.enums.Translation;
 
 public class BGPlayer implements CommandExecutor{
 
-	Logger log = BGMain.getPluginLogger();
+	Logger log = BGMain.getLog();
 		
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
@@ -183,7 +182,7 @@ public class BGPlayer implements CommandExecutor{
 					}
 					
 					Location loc = new Location(Bukkit.getServer().getWorlds().get(0), x, Bukkit.getServer().getWorlds().get(0).getHighestBlockYAt(x, z)+1.5, z);
-					if(!BGMain.inBorder(loc, BorderType.WARN)) {
+					if(!BGMain.inBorder(loc)) {
 						BGChat.printPlayerChat(p, ChatColor.RED + Translation.TELEPORT_FUNC_COORDS_NOT_VALID.t());
 						return true;
 					}

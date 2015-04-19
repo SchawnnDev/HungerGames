@@ -16,23 +16,21 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import utilities.enums.BorderType;
-
 public class BGFeast {
 
 	private static Block mainBlock = null;
 	private static Integer radius = 8;
-	private static Logger log = BGMain.getPluginLogger();
+	private static Logger log = BGMain.getLog();
 	private static Boolean spawned = false;
 	private static Chest[] chests = new Chest[8];
 	
-	private static ArrayList<Location> fblocks = new ArrayList<Location>();
+	private static ArrayList<Location> fblocks = new ArrayList<>();
 
 	public static void announceFeast(Integer time) {
 		if(mainBlock == null) {
 			do {
 				mainBlock = BGMain.getRandomLocation().subtract(0, 1, 0).getBlock();
-			} while (!BGMain.inBorder(mainBlock.getLocation(), BorderType.WARN) || mainBlock.getType() == Material.LOG || mainBlock.getType() == Material.LEAVES);
+			} while (!BGMain.inBorder(mainBlock.getLocation()) || mainBlock.getType() == Material.LOG || mainBlock.getType() == Material.LEAVES);
 			mainBlock.setType(Material.NETHERRACK);
 			fblocks.add(mainBlock.getLocation());
 			removeAbove(mainBlock);
@@ -62,13 +60,13 @@ public class BGFeast {
 			String[] oneitem = item.split(",");
 			Random r = new Random();
 			String itemid = oneitem[0];
-			Integer minamount = Integer.parseInt(oneitem[1]);
-			Integer maxamount = Integer.parseInt(oneitem[2]);
-			Integer amount = 0;
-			Boolean force = Boolean.parseBoolean(oneitem[3]);
-			Boolean spawn = force;
-			Integer id = null;
-			Short durability = null;
+			int minamount = Integer.parseInt(oneitem[1]);
+            int maxamount = Integer.parseInt(oneitem[2]);
+            int amount = 0;
+			boolean force = Boolean.parseBoolean(oneitem[3]);
+            boolean spawn = force;
+			int id = 0;
+			Short durability = 0;
 			
 			if(!force)
 				spawn = r.nextBoolean();
@@ -92,7 +90,7 @@ public class BGFeast {
 			if(oneitem.length == 6)
 				i.addUnsafeEnchantment(Enchantment.getById(Integer.parseInt(oneitem[4])), Integer.parseInt(oneitem[5]));
 						
-			Integer ra = radius;
+			int ra = radius;
 			
 			if(maxamount == minamount)
 				amount = maxamount;
@@ -102,7 +100,7 @@ public class BGFeast {
 			if(BGMain.FEAST_CHESTS) {				
 				while(amount > 0) {
 					Chest chest = chests[r.nextInt(8)];
-					Integer slot = r.nextInt(27);
+					int slot = r.nextInt(27);
 					int maxtry = 0;
 					while(chest.getInventory().getItem(slot) != null 
 							&& !chest.getInventory().getItem(slot).getType().equals(i.getType()) && maxtry < 1000)

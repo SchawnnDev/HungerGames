@@ -14,12 +14,11 @@ import org.bukkit.entity.Player;
 import utilities.BGChat;
 import utilities.BGKit;
 import utilities.BGReward;
-import utilities.Updater;
 import utilities.enums.GameState;
 import utilities.enums.Translation;
 
 public class BGConsole implements CommandExecutor {
-	Logger log = BGMain.getPluginLogger();
+	Logger log = BGMain.getLog();
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player p;
@@ -39,48 +38,6 @@ public class BGConsole implements CommandExecutor {
 			}
 			return true;
 		}
-				
-		if(cmd.getName().equalsIgnoreCase("bgversion")) {
-			if(sender.hasPermission("bg.admin.check")) {
-				BGMain.checkVersion(sender, p);
-			} else {
-				msg(p, sender, ChatColor.RED + Translation.NO_PERMISSION.t());
-				return true;
-			}
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("bgdownload")) {
-			if(sender.hasPermission("bg.admin.download")) {
-				if(!BGMain.UPDATE_CHECK) {
-					msg(p, sender, ChatColor.RED + Translation.UPDATE_CHECK_DISABLED.t());
-					return true;
-				}
-				Updater updater = new Updater(BGMain.instance, "bukkitgames", BGMain.getPFile(), Updater.UpdateType.NO_DOWNLOAD, false);
-				boolean update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE;
-				
-				if(update) {
-					if(!BGMain.AUTO_UPDATE) {
-						msg(p, sender, ChatColor.RED + Translation.UPDATE_DOWNLOAD_DISABLED.t());
-						return true;
-					}
-					msg(p, sender, ChatColor.GREEN + Translation.UPDATE_DOWNLOAD_VERSION.t().replace("<version>", updater.getLatestVersionString()));
-					Updater download = new Updater(BGMain.instance, "bukkitgames", BGMain.getPFile(), Updater.UpdateType.NO_VERSION_CHECK, true);
-					
-					if(download.getResult() == Updater.UpdateResult.SUCCESS) {
-						msg(p, sender, ChatColor.GREEN + Translation.UPDATE_DOWNLOAD_COMPLETE.t());
-					} else {
-						msg(p, sender, ChatColor.RED + Translation.UPDATE_DOWNLOAD_ERROR.t());
-					}
-				} else {
-					msg(p, sender,  ChatColor.RED + Translation.UPDATE_NO_UPDATE.t());
-				}
-				
-				return true;
-			} else {
-				msg(p, sender, ChatColor.RED + Translation.NO_PERMISSION.t());
-				return true;
-			}
-		}
 		
 		if (cmd.getName().equalsIgnoreCase("coin")) {
 			
@@ -95,7 +52,7 @@ public class BGConsole implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + Translation.CMD_ONLY_PLAYER_ACCESS.t());
 				return true;
 			} else if(p != null) {
-				coins = BGMain.getCoins(BGMain.getPlayerID(p.getName()));
+				coins = BGMain.getCoins(p.getUniqueId());
 			}
 			
 			if (args.length == 0) {
@@ -148,7 +105,7 @@ public class BGConsole implements CommandExecutor {
 				if (args.length < 3) {
 					return false;
 				}
-				if (BGMain.getPlayerID(args[1]) == null) {
+				if (BGMain.getPlayerID(Bukkit.getPlayer(args[1]).getUniqueId()) == 0) {
 					BGChat.printPlayerChat(p, ChatColor.RED + Translation.PLAYER_NOT_ONLINE.t());
 					return true;
 				}else {
@@ -188,7 +145,7 @@ public class BGConsole implements CommandExecutor {
 						if (args.length < 3) {
 							return false;
 						}
-						if (BGMain.getPlayerID(args[1]) == null) {
+						if (BGMain.getPlayerID(Bukkit.getPlayer(args[1]).getUniqueId()) == 0) {
 							msg(p, sender, ChatColor.RED + Translation.PLAYER_NOT_ONLINE.t());
 							return true;
 						}
@@ -218,12 +175,12 @@ public class BGConsole implements CommandExecutor {
 							return false;
 						}
 						
-						if (BGMain.getPlayerID(args[1]) == null) {
+						if (BGMain.getPlayerID(Bukkit.getPlayer(args[1]).getUniqueId()) == 0) {
 							msg(p, sender, ChatColor.RED + Translation.PLAYER_NOT_ONLINE.t());
 							return true;
 						}
 						
-						int coins1 = BGMain.getCoins(BGMain.getPlayerID(args[1]));
+						int coins1 = BGMain.getCoins(p.getUniqueId());
 						msg(p, sender, ChatColor.YELLOW + Translation.REWARD_FUNC_STATS.t().replace("<player>", args[1]).replace("<coins>", coins1 + ""));
 					} else {
 						BGChat.printPlayerChat(p, ChatColor.RED + Translation.NO_PERMISSION.t());

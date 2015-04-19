@@ -55,22 +55,22 @@ import main.BGMain;
 
 public class BGAbilitiesListener implements Listener {
 
-	Logger log = BGMain.getPluginLogger();
+	Logger log = BGMain.getLog();
 	
-	public static ArrayList<Player> viperList = new ArrayList<Player>();
-	public static ArrayList<Player> monkList = new ArrayList<Player>();
-	public static ArrayList<Player> thiefList = new ArrayList<Player>();
-	public static ArrayList<Player> ghostList = new ArrayList<Player>();
-	public static ArrayList<Player> thorList = new ArrayList<Player>();
-	public static ArrayList<Player> timeList = new ArrayList<Player>();
-	public static ArrayList<Player> freezeList = new ArrayList<Player>();
+	public static ArrayList<Player> viperList = new ArrayList<>();
+	public static ArrayList<Player> monkList = new ArrayList<>();
+	public static ArrayList<Player> thiefList = new ArrayList<>();
+	public static ArrayList<Player> ghostList = new ArrayList<>();
+	public static ArrayList<Player> thorList = new ArrayList<>();
+	public static ArrayList<Player> timeList = new ArrayList<>();
+	public static ArrayList<Player> freezeList = new ArrayList<>();
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		Action a = event.getAction();
 		if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
-			if ((BGKit.hasAbility(p, Integer.valueOf(5)) & p.getItemInHand()
+			if ((BGKit.hasAbility(p,5) & p.getItemInHand()
 					.getType() == Material.COOKIE)) {
 				p.addPotionEffect(new PotionEffect(
 						PotionEffectType.INCREASE_DAMAGE, BGFiles.abconf.getInt("AB.5.Duration") * 20, 0));
@@ -81,7 +81,7 @@ public class BGAbilitiesListener implements Listener {
 		}
 		
 		if (a == Action.LEFT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR) {
-			if (BGKit.hasAbility(p, Integer.valueOf(4)) && p.getItemInHand() != null && 
+			if (BGKit.hasAbility(p, 4) && p.getItemInHand() != null &&
 					p.getItemInHand().getType().equals(Material.FIREBALL)) {
 				Vector lookat = p.getLocation().getDirection().multiply(10);
 				Fireball fire = p.getWorld().spawn(p.getLocation().add(lookat), Fireball.class);
@@ -180,13 +180,13 @@ public class BGAbilitiesListener implements Listener {
 
 		if (entity.getType() == EntityType.ARROW) {
 			Arrow arrow = (Arrow) entity;
-			LivingEntity shooter = arrow.getShooter();
+			LivingEntity shooter = (LivingEntity) arrow.getShooter();
 			if (shooter.getType() == EntityType.PLAYER) {
 				Player player = (Player) shooter;
 				if(BGMain.isSpectator(player)) {
 					return;
 				}
-				if (BGKit.hasAbility(player, Integer.valueOf(1))) {
+				if (BGKit.hasAbility(player, 1)) {
 					Bukkit.getServer().getWorlds().get(0).createExplosion(arrow.getLocation(), 2.0F, false);
 					arrow.remove();
 				} else {
@@ -199,13 +199,13 @@ public class BGAbilitiesListener implements Listener {
 
 		if (entity.getType() == EntityType.SNOWBALL) {
 			Snowball ball = (Snowball) entity;
-			LivingEntity shooter = ball.getShooter();
+			LivingEntity shooter = (LivingEntity) ball.getShooter();
 			if (shooter.getType() == EntityType.PLAYER) {
 				Player player = (Player) shooter;
 				if(BGMain.isSpectator(player)) {
 					return;
 				}
-				if (BGKit.hasAbility(player, Integer.valueOf(3)).booleanValue()) {
+				if (BGKit.hasAbility(player, 3)) {
 					Bukkit.getServer().getWorlds().get(0)
 							.createExplosion(ball.getLocation(), 0.0F);
 					for (Entity e : ball.getNearbyEntities(3.0D, 3.0D, 3.0D))
@@ -228,7 +228,7 @@ public class BGAbilitiesListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent e) {
 		Player p = e.getEntity().getKiller();
-		if (BGKit.hasAbility(p, Integer.valueOf(7)).booleanValue()) {
+		if (BGKit.hasAbility(p, 7)) {
 			if (e.getEntityType() == EntityType.PIG) {
 				e.getDrops().clear();
 				e.getDrops().add(new ItemStack(Material.PORK, BGFiles.abconf.getInt("AB.7.Amount")));
@@ -251,7 +251,7 @@ public class BGAbilitiesListener implements Listener {
 			Player p = (Player) event.getEntity();
 			if(BGMain.isSpectator(p))
 				return;
-			if (BGKit.hasAbility(p, Integer.valueOf(8))) {
+			if (BGKit.hasAbility(p, 8)) {
 				if (event.getCause() == DamageCause.FALL) {
 					if (event.getDamage() > 4) {
 						event.setCancelled(true);
@@ -280,7 +280,7 @@ public class BGAbilitiesListener implements Listener {
 			}
 			
 			if (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
-				if ((BGKit.hasAbility(p, Integer.valueOf(6)).booleanValue() & !p
+				if ((BGKit.hasAbility(p, 6) & !p
 						.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE))) {
 					p.addPotionEffect(new PotionEffect(
 							PotionEffectType.INCREASE_DAMAGE, 200, 1));
@@ -412,10 +412,8 @@ public class BGAbilitiesListener implements Listener {
 										BGChat.printPlayerChat(p, "You got "+BGMain.COINS_FOR_KILL+" Coins for killing "+v.getName());
 								}
 								if (BGMain.SQL_USE) {
-									Integer PL_ID = BGMain.getPlayerID(v
-											.getName());
-									Integer KL_ID = BGMain.getPlayerID(p
-											.getName());
+									int PL_ID = BGMain.getPlayerID(v.getUniqueId());
+									int KL_ID = BGMain.getPlayerID(p.getUniqueId());
 									BGMain.SQLquery("UPDATE `PLAYS` SET deathtime = NOW(), `REF_KILLER` = "
 											+ KL_ID
 											+ ", `DEATH_REASON` = 'HEADSHOT' WHERE `REF_PLAYER` = "

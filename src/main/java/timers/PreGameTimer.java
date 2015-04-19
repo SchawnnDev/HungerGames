@@ -16,7 +16,7 @@ public class PreGameTimer {
 		shed_id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(BGMain.instance, new Runnable() {
 			
 			public void run() {
-				if (BGMain.COUNTDOWN.intValue() > 0) {
+				if (BGMain.COUNTDOWN > 0) {
 					if (BGMain.COUNTDOWN >= 10 & BGMain.COUNTDOWN % 10 == 0) {
 						BGChat.printTimeChat("The game will start in "
 								+ BGMain.TIME(BGMain.COUNTDOWN) + ".");
@@ -35,8 +35,7 @@ public class PreGameTimer {
 					}
 
 					BGMain.COUNTDOWN--;
-				} else if (BGMain.getGamers().length < BGMain.MINIMUM_PLAYERS
-						.intValue()) {
+				} else if (BGMain.getGamers().length < BGMain.MINIMUM_PLAYERS) {
 					BGChat.printTimeChat("There are too few players on, restarting countdown.");
 					BGMain.COUNTDOWN = BGMain.COUNTDOWN_SECONDS;
 				} else {
